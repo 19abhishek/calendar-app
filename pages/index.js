@@ -2,8 +2,20 @@ import Head from "next/head";
 
 import { getMonth } from "../components/months";
 import Header from "../components/Header";
+import { getProviders, getSession, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const { status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      // The user is not authenticated, handle it here.
+      router.push("/home");
+    },
+  });
+
   return (
     <div>
       <Head>
@@ -15,4 +27,22 @@ export default function Home() {
       <Header />
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/home",
+      },
+    };
+  }
+
+  return {
+    props: {
+      session,
+    },
+  };
 }
