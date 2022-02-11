@@ -1,8 +1,9 @@
 import React from "react";
 import Image from "next/image";
 import Button from "@mui/material/Button";
+import { getProviders, getSession, signIn } from "next-auth/react";
 
-function home() {
+function home({ providers }) {
   return (
     <div className="">
       <header className="flex justify-between p-6 shadow-sm shadow-gray-300 items-center w-screen h-16 border-b-6">
@@ -13,9 +14,19 @@ function home() {
           width="194"
           height="36"
         />
-        <Button style={{ backgroundColor: "#1971c2" }} variant="contained">
-          Sign In
-        </Button>
+        {Object.values(providers).map((provider) => (
+          <div key={provider.name}>
+            <div className="pl-4">
+              <Button
+                style={{ backgroundColor: "#1971c2" }}
+                variant="contained"
+                onClick={() => signIn(provider.id, { callbackUrl: "/" })}
+              >
+                Sign In
+              </Button>
+            </div>
+          </div>
+        ))}
       </header>
       <main className="mt-20  flex flex-col items-center justify-items-center">
         <Image src="/logo-large.png" height="280" width="240" />
@@ -28,3 +39,15 @@ function home() {
 }
 
 export default home;
+
+export async function getServerSideProps(context) {
+  const providers = await getProviders();
+  const session = await getSession(context);
+
+  return {
+    props: {
+      providers,
+      session,
+    },
+  };
+}
