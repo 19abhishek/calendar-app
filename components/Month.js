@@ -8,7 +8,7 @@ function Month({ month }) {
         return (
           <React.Fragment key={idx}>
             {row.map((day, i) => (
-              <Day day={day} key={i} />
+              <Day day={day} val={idx} key={i} />
             ))}
           </React.Fragment>
         );
