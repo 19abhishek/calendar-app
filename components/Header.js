@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
 import Button from "@mui/material/Button";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -45,13 +45,6 @@ function Header() {
           </IconButton>
         </div>
       </header>
-      {/* <Button
-        style={{ backgroundColor: "#1971c2" }}
-        variant="contained"
-        onClick={signOut}
-      >
-        Sign Out
-      </Button> */}
     </div>
   );
 }
