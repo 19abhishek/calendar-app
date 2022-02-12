@@ -11,6 +11,7 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AppsIcon from "@mui/icons-material/Apps";
 import { Avatar } from "@mui/material";
+import dayjs from "dayjs";
 
 function Header() {
   return (
@@ -32,7 +33,9 @@ function Header() {
             <IconButton aria-label="Right icon">
               <ChevronRightIcon />
             </IconButton>
-            <span className="text-[1.5rem] text-gray-700">Feburuary 2022</span>
+            <span className="text-[1.5rem] text-gray-700">
+              {`${dayjs().format("MMMM")} ${dayjs().format("YYYY")}`}
+            </span>
           </div>
         </div>
         <div className="flex items-center gap-6">
