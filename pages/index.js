@@ -6,6 +6,7 @@ import { getProviders, getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Sidebar from "../components/Sidebar";
 import Month from "../components/Month";
+import { useState } from "react";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -17,8 +18,8 @@ export default function Home() {
       router.push("/home");
     },
   });
-
-  console.table(getMonth());
+  const [currentMonth, setCurrentMonth] = useState(getMonth());
+  console.log(currentMonth);
 
   return (
     <div>
@@ -31,7 +32,7 @@ export default function Home() {
         <Header />
         <div className="flex">
           <Sidebar />
-          <Month />
+          <Month month={currentMonth} />
         </div>
       </div>
     </div>
