@@ -1,7 +1,13 @@
 import React from "react";
 import dayjs from "dayjs";
+import { modalState } from "../atom/modalAtom";
+import { useRecoilState } from "recoil";
+import { selectedDay } from "../atom/monthAtom";
 
 function Day({ day, val }) {
+  const [currentModalState, setCurrentModalState] = useRecoilState(modalState);
+  const [currSelectedDay, setCurrentSelectedDay] = useRecoilState(selectedDay);
+
   const getCurrentDay = () => {
     return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")
       ? "bg-blue-100 rounded-full h-12 w-12 cursor-pointer hover:bg-blue-200 "
@@ -19,7 +25,13 @@ function Day({ day, val }) {
           {day.format("DD")}
         </p>
       </header>
-      <div></div>
+      <div
+        className="flex flex-col flex-1 cursor-pointer"
+        onClick={() => {
+          setCurrentModalState(!currentModalState);
+          setCurrentSelectedDay(day);
+        }}
+      ></div>
     </div>
   );
 }

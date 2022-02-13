@@ -10,15 +10,26 @@ import Button from "@mui/material/Button";
 import { modalState } from "../atom/modalAtom";
 import { useRecoilState } from "recoil";
 import { selectedDay } from "../atom/monthAtom";
+import DoneIcon from "@mui/icons-material/Done";
+
+const colors = [
+  "bg-rose-500",
+  "bg-fuchsia-500",
+  "bg-yellow-500",
+  "bg-violet-500",
+  "bg-sky-500",
+  "bg-teal-500",
+];
 
 function CreateEvent() {
   const [currentModalState, setCurrentModalState] = useRecoilState(modalState);
   const [currSelectedDay, setCurrentSelectedDay] = useRecoilState(selectedDay);
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   console.log(title);
 
   return (
-    <div className="fixed border-0 border-gray-500 z-40 top-[20vh] left-[35vw] w-[30vw] h-[70vh] rounded-lg shadow-2xl bg-[#fff]">
+    <div className="fixed border-0 border-gray-500 z-40 top-[18vh] left-[35vw] w-[30vw] h-[72vh] rounded-lg shadow-2xl bg-[#fff]">
       <header className="h-[5vh] bg-gray-100 rounded-t-lg flex items-center justify-between p-4">
         <DragHandleIcon className="!text-gray-400 !text-2xl" />
         <IconButton
@@ -30,7 +41,7 @@ function CreateEvent() {
         </IconButton>
       </header>
       <main className="p-4">
-        <form className="flex flex-col gap-12" action="">
+        <form className="flex flex-col gap-10" action="">
           <TextField
             id="standard-basic"
             label="Add Title"
@@ -61,7 +72,21 @@ function CreateEvent() {
               label="Add Description"
               variant="standard"
               className="!w-[68%] !flex !m-auto"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
+          </div>
+          <div className="flex gap-8 m-auto">
+            {colors.map((currColor, idx) => {
+              return (
+                <span
+                  key={idx}
+                  className={`${currColor} w-8 h-8 rounded-full flex items-center justify-center cursor-pointer`}
+                >
+                  <DoneIcon className="!text-gray-100" />
+                </span>
+              );
+            })}
           </div>
           <div className="ml-8 flex justify-end pr-8 items-center gap-12">
             <Button variant="text" className="!text-gray-600">
