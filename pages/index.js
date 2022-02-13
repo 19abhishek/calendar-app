@@ -9,6 +9,8 @@ import Month from "../components/Month";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { getMonthIndex, sidebarCalendarMonth } from "../atom/monthAtom";
+import CreateEvent from "../components/CreateEventModal";
+import { modalState } from "../atom/modalAtom";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -25,6 +27,8 @@ export default function Home() {
 
   const [smallCalendarMonth, setSmallCalendarMonth] =
     useRecoilState(sidebarCalendarMonth);
+
+  const [currModalState, setModalState] = useRecoilState(modalState);
 
   useEffect(() => {
     setCurrentMonth(getMonth(monthIndex));
@@ -50,6 +54,7 @@ export default function Home() {
           <Month month={currentMonth} />
         </div>
       </div>
+      {currModalState && <CreateEvent />}
     </div>
   );
 }
