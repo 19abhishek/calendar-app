@@ -27,7 +27,11 @@ function Header() {
   };
 
   const resetHandler = () => {
-    setMonthIndex(dayjs().month());
+    setMonthIndex(
+      monthIndex === dayjs().month()
+        ? monthIndex + Math.random()
+        : dayjs().month()
+    );
   };
 
   return (

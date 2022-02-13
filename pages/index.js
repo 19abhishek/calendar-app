@@ -39,7 +39,7 @@ export default function Home() {
       <div className="flex flex-col h-screen">
         <Header />
         <div className="flex">
-          <Sidebar />
+          <Sidebar month={currentMonth} />
           <Month month={currentMonth} />
         </div>
       </div>
