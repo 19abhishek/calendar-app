@@ -7,8 +7,8 @@ import { useRouter } from "next/router";
 import Sidebar from "../components/Sidebar";
 import Month from "../components/Month";
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { getMonthIndex } from "../atom/monthAtom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { getMonthIndex, sidebarCalendarMonth } from "../atom/monthAtom";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -21,13 +21,20 @@ export default function Home() {
     },
   });
   const [currentMonth, setCurrentMonth] = useState(getMonth());
-  const monthIndex = useRecoilValue(getMonthIndex);
+  const [monthIndex, setMonthIndex] = useRecoilState(getMonthIndex);
+
+  const [smallCalendarMonth, setSmallCalendarMonth] =
+    useRecoilState(sidebarCalendarMonth);
 
   useEffect(() => {
     setCurrentMonth(getMonth(monthIndex));
   }, [monthIndex]);
 
-  console.log(monthIndex);
+  useEffect(() => {
+    if (smallCalendarMonth !== null) {
+      setMonthIndex(smallCalendarMonth);
+    }
+  }, [smallCalendarMonth]);
 
   return (
     <div>

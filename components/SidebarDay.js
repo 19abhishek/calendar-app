@@ -1,5 +1,7 @@
 import dayjs from "dayjs";
-import React from "react";
+import React, { useState } from "react";
+import { useRecoilState } from "recoil";
+import { getMonthIndex, sidebarCalendarMonth } from "../atom/monthAtom";
 
 function SidebarDay({ day, val }) {
   const getCurrentDay = () => {
@@ -11,7 +13,10 @@ function SidebarDay({ day, val }) {
     <div className="flex flex-col">
       <header className="flex flex-col items-center">
         <p
-          className={`text-sm p-2 flex flex-col justify-center items-center ${getCurrentDay()}`}
+          className={`text-sm p-2 flex flex-col cursor-pointer justify-center items-center ${getCurrentDay()}`}
+          onClick={() => {
+            setSmallCalendarMonth(currentMonthIndex);
+          }}
         >
           {day.format("DD")}
         </p>

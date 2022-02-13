@@ -7,3 +7,8 @@ export const getMonthIndex = atom({
   key: "getMonthIndex",
   default: currMonthIndex,
 });
+
+export const sidebarCalendarMonth = atom({
+  key: "sidebarCalendarMonth",
+  default: 0,
+});
