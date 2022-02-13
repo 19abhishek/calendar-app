@@ -12,3 +12,8 @@ export const sidebarCalendarMonth = atom({
   key: "sidebarCalendarMonth",
   default: 0,
 });
+
+export const selectedDay = atom({
+  key: "selectedDay",
+  default: dayjs(),
+});

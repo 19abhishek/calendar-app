@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import CloseIcon from "@mui/icons-material/Close";
 import { IconButton, TextField } from "@mui/material";
@@ -7,13 +7,25 @@ import PeopleIcon from "@mui/icons-material/People";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import Button from "@mui/material/Button";
+import { modalState } from "../atom/modalAtom";
+import { useRecoilState } from "recoil";
+import { selectedDay } from "../atom/monthAtom";
 
 function CreateEvent() {
+  const [currentModalState, setCurrentModalState] = useRecoilState(modalState);
+  const [currSelectedDay, setCurrentSelectedDay] = useRecoilState(selectedDay);
+  const [title, setTitle] = useState("");
+  console.log(title);
+
   return (
     <div className="fixed border-0 border-gray-500 z-40 top-[20vh] left-[35vw] w-[30vw] h-[70vh] rounded-lg shadow-2xl bg-[#fff]">
       <header className="h-[5vh] bg-gray-100 rounded-t-lg flex items-center justify-between p-4">
         <DragHandleIcon className="!text-gray-400 !text-2xl" />
-        <IconButton className="!hover:cursor-pointer" aria-label="menu icon">
+        <IconButton
+          className="!hover:cursor-pointer"
+          aria-label="menu icon"
+          onClick={() => setCurrentModalState(!currentModalState)}
+        >
           <CloseIcon className="!text-gray-700 !text-2xl " />
         </IconButton>
       </header>
@@ -24,11 +36,14 @@ function CreateEvent() {
             label="Add Title"
             variant="standard"
             className="!w-[90%] !flex !m-auto "
+            required
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
           <div className="ml-8 flex items-center gap-12">
             <AccessTimeIcon className="!text-gray-500 !text-xl" />
             <span className="ml-8 text-xl text-gray-700">
-              Monday, February 07
+              {currSelectedDay.format("dddd, MMMM DD")}
             </span>
           </div>
           <div className="ml-8 flex items-center gap-12">

@@ -19,6 +19,7 @@ function Day({ day, val }) {
           {day.format("DD")}
         </p>
       </header>
+      <div></div>
     </div>
   );
 }

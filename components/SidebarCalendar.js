@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { getMonthIndex, sidebarCalendarMonth } from "../atom/monthAtom";
+import {
+  getMonthIndex,
+  selectedDay,
+  sidebarCalendarMonth,
+} from "../atom/monthAtom";
 import dayjs from "dayjs";
 import { IconButton } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { getMonth } from "./months";
-import SidebarDay from "./SidebarDay";
 
 function SidebarCalendar({ month }) {
   const [monthIndex, setMonthIndex] = useRecoilState(getMonthIndex);
@@ -14,6 +17,8 @@ function SidebarCalendar({ month }) {
   const [currentMonth, setCurrentMonth] = useState(getMonth());
   const [smallCalendarMonth, setSmallCalendarMonth] =
     useRecoilState(sidebarCalendarMonth);
+
+  const [currSelectedDay, setCurrentSelectedDay] = useRecoilState(selectedDay);
 
   useEffect(() => {
     setCurrentMonth(getMonth(currentMonthIndex));
@@ -35,6 +40,15 @@ function SidebarCalendar({ month }) {
     return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")
       ? "bg-blue-100 rounded-full h-6 w-6 cursor-pointer hover:bg-blue-200 "
       : "";
+  };
+
+  const getSelectedDayClass = (day) => {
+    const format = "DD-MM-YY";
+    const currDay = day.format(format);
+    const selectedDay = currSelectedDay && currSelectedDay.format(format);
+    if (currDay === selectedDay) {
+      return "bg-blue-300 h-6 w-6 rounded-full text-gray-600";
+    }
   };
 
   return (
@@ -69,14 +83,15 @@ function SidebarCalendar({ month }) {
             <React.Fragment key={Math.random()}>
               {row.map((day, i) => (
                 // <SidebarDay day={day} val={idx} key={i} />
-                <div className="flex flex-col">
+                <div key={i} className="flex flex-col">
                   <header className="flex flex-col items-center">
                     <p
                       className={`text-sm p-2 flex flex-col cursor-pointer justify-center items-center ${getCurrentDay(
                         day
-                      )}`}
+                      )} ${getSelectedDayClass(day)}`}
                       onClick={() => {
                         setSmallCalendarMonth(currentMonthIndex);
+                        setCurrentSelectedDay(day);
                       }}
                     >
                       {day.format("DD")}
