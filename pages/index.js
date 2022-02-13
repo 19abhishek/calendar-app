@@ -6,7 +6,9 @@ import { getProviders, getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Sidebar from "../components/Sidebar";
 import Month from "../components/Month";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { getMonthIndex } from "../atom/monthAtom";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -19,7 +21,13 @@ export default function Home() {
     },
   });
   const [currentMonth, setCurrentMonth] = useState(getMonth());
-  console.log(currentMonth);
+  const monthIndex = useRecoilValue(getMonthIndex);
+
+  useEffect(() => {
+    setCurrentMonth(getMonth(monthIndex));
+  }, [monthIndex]);
+
+  console.log(monthIndex);
 
   return (
     <div>
