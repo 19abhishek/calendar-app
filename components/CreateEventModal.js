@@ -12,6 +12,7 @@ import { useRecoilState } from "recoil";
 import { selectedDay } from "../atom/monthAtom";
 import DoneIcon from "@mui/icons-material/Done";
 import { events } from "../atom/eventAtom";
+import { useAppContext } from "../context/AppContext";
 
 const colors = [
   "bg-rose-500",
@@ -25,32 +26,33 @@ const colors = [
 function CreateEvent() {
   const [currentModalState, setCurrentModalState] = useRecoilState(modalState);
   const [currSelectedDay, setCurrentSelectedDay] = useRecoilState(selectedDay);
-  const [savedEvents, setSavedEvents] = useRecoilState(events);
+  //const [savedEvents, setSavedEvents] = useRecoilState(events);
   const [title, setTitle] = useState("");
   const [selectedLabel, setSelectedLabel] = useState("bg-rose-500");
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [description, setDescription] = useState("");
 
-  const getSavedItems = () => {
-    let list = localStorage.getItem("savedEvents");
-    if (list) {
-      return JSON.parse(list);
-    } else {
-      return [];
-    }
-  };
+  // const getSavedItems = () => {
+  //   let list = localStorage.getItem("savedEvents");
+  //   if (list) {
+  //     return JSON.parse(list);
+  //   } else {
+  //     return [];
+  //   }
+  // };
+
+  const [savedEvents, dispatchEvents] = useAppContext();
 
   function handleSubmit(e) {
     e.preventDefault();
     const val = {
       title,
       description,
-      currSelectedDay,
+      day: currSelectedDay.valueOf(),
       selectedLabel,
       id: Date.now(),
     };
-    let currentList = getSavedItems();
-    setSavedEvents([...currentList, val]);
-    localStorage.setItem("savedEvents", JSON.stringify(savedEvents));
+    dispatchEvents({ type: "push", payload: val });
     setCurrentModalState(false);
   }
 

@@ -1,12 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { modalState } from "../atom/modalAtom";
 import { useRecoilState } from "recoil";
 import { selectedDay } from "../atom/monthAtom";
+import { useAppContext } from "../context/AppContext";
 
 function Day({ day, val }) {
   const [currentModalState, setCurrentModalState] = useRecoilState(modalState);
   const [currSelectedDay, setCurrentSelectedDay] = useRecoilState(selectedDay);
+
+  const [savedEvents, dispatchEvents] = useAppContext();
+
+  const [dayEvents, setDayEvents] = useState([]);
+
+  useEffect(() => {
+    const events = savedEvents.filter(
+      (evt) => dayjs(evt.day).format("DD-MM-YY") === day.format("DD-MM-YY")
+    );
+    setDayEvents(events);
+  }, [savedEvents]);
 
   const getCurrentDay = () => {
     return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")
@@ -26,12 +38,23 @@ function Day({ day, val }) {
         </p>
       </header>
       <div
-        className="flex flex-col flex-1 cursor-pointer"
+        className="flex flex-col gap-2 flex-1 cursor-pointer"
         onClick={() => {
           setCurrentModalState(!currentModalState);
           setCurrentSelectedDay(day);
         }}
-      ></div>
+      >
+        {dayEvents.map((event, idx) => {
+          return (
+            <div
+              className={`${event.selectedLabel} p-1 rounded-lg text-gray-100 flex-wrap truncate`}
+              key={idx}
+            >
+              {event.title}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
