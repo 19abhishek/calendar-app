@@ -4,10 +4,13 @@ import { modalState } from "../atom/modalAtom";
 import { useRecoilState } from "recoil";
 import { selectedDay } from "../atom/monthAtom";
 import { useAppContext } from "../context/AppContext";
+import { selectedEvents } from "../atom/eventAtom";
 
 function Day({ day, val }) {
   const [currentModalState, setCurrentModalState] = useRecoilState(modalState);
   const [currSelectedDay, setCurrentSelectedDay] = useRecoilState(selectedDay);
+  const [currSelectedEvent, setCurrentSelectedEvent] =
+    useRecoilState(selectedEvents);
 
   const [savedEvents, dispatchEvents] = useAppContext();
 
@@ -18,7 +21,7 @@ function Day({ day, val }) {
       (evt) => dayjs(evt.day).format("DD-MM-YY") === day.format("DD-MM-YY")
     );
     setDayEvents(events);
-  }, [savedEvents]);
+  }, [savedEvents, day]);
 
   const getCurrentDay = () => {
     return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")
@@ -26,7 +29,7 @@ function Day({ day, val }) {
       : "";
   };
   return (
-    <div className="flex flex-col border border-gray-300 mt-0">
+    <div className="flex flex-col flex-1 border border-gray-300 mt-0">
       <header className="flex flex-col items-center">
         {val === 0 && (
           <p className="mt-1 text-gray-700">
@@ -49,6 +52,7 @@ function Day({ day, val }) {
             <div
               className={`${event.selectedLabel} p-1 rounded-lg text-gray-100 flex-wrap truncate`}
               key={idx}
+              onClick={() => setCurrentSelectedEvent(event)}
             >
               {event.title}
             </div>
