@@ -11,6 +11,7 @@ import { modalState } from "../atom/modalAtom";
 import { useRecoilState } from "recoil";
 import { selectedDay } from "../atom/monthAtom";
 import DoneIcon from "@mui/icons-material/Done";
+import { events } from "../atom/eventAtom";
 
 const colors = [
   "bg-rose-500",
@@ -24,9 +25,34 @@ const colors = [
 function CreateEvent() {
   const [currentModalState, setCurrentModalState] = useRecoilState(modalState);
   const [currSelectedDay, setCurrentSelectedDay] = useRecoilState(selectedDay);
+  const [savedEvents, setSavedEvents] = useRecoilState(events);
   const [title, setTitle] = useState("");
+  const [selectedLabel, setSelectedLabel] = useState("bg-rose-500");
   const [description, setDescription] = useState("");
-  console.log(title);
+
+  const getSavedItems = () => {
+    let list = localStorage.getItem("savedEvents");
+    if (list) {
+      return JSON.parse(list);
+    } else {
+      return [];
+    }
+  };
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const val = {
+      title,
+      description,
+      currSelectedDay,
+      selectedLabel,
+      id: Date.now(),
+    };
+    let currentList = getSavedItems();
+    setSavedEvents([...currentList, val]);
+    localStorage.setItem("savedEvents", JSON.stringify(savedEvents));
+    setCurrentModalState(false);
+  }
 
   return (
     <div className="fixed border-0 border-gray-500 z-40 top-[18vh] left-[35vw] w-[30vw] h-[72vh] rounded-lg shadow-2xl bg-[#fff]">
@@ -81,9 +107,12 @@ function CreateEvent() {
               return (
                 <span
                   key={idx}
+                  onClick={() => setSelectedLabel(currColor)}
                   className={`${currColor} w-8 h-8 rounded-full flex items-center justify-center cursor-pointer`}
                 >
-                  <DoneIcon className="!text-gray-100" />
+                  {selectedLabel === currColor && (
+                    <DoneIcon className="!text-gray-100" />
+                  )}
                 </span>
               );
             })}
@@ -96,6 +125,7 @@ function CreateEvent() {
               style={{ backgroundColor: "#307fc8" }}
               className="!hover:bg-[#5e9cd4]"
               variant="contained"
+              onClick={handleSubmit}
             >
               Save
             </Button>

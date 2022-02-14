@@ -15,6 +15,8 @@ import {
 } from "../atom/monthAtom";
 import CreateEvent from "../components/CreateEventModal";
 import { modalState } from "../atom/modalAtom";
+import { events } from "../atom/eventAtom";
+import { useAppContext } from "../context/AppContext";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -35,6 +37,22 @@ export default function Home() {
   const [currModalState, setModalState] = useRecoilState(modalState);
 
   const [currSelectedDay, setCurrentSelectedDay] = useRecoilState(selectedDay);
+
+  const [savedEvents, setSavedEvents] = useRecoilState(events);
+
+  //console.log(localStorage.getItem("savedEvents"));
+
+  // if (typeof window !== "undefined" && !localStorage.getItem("savedEvents")) {
+  //   localStorage.setItem("savedEvents", []);
+  // }
+
+  const [appState, setAppState] = useAppContext();
+
+  console.log(appState);
+
+  useEffect(() => {
+    localStorage.setItem("savedEvents", JSON.stringify(savedEvents));
+  }, [savedEvents]);
 
   useEffect(() => {
     setCurrentMonth(getMonth(monthIndex));
