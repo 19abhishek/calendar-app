@@ -8,12 +8,12 @@ export default function App({
   pageProps: { session, ...pageProps },
 }) {
   return (
-    <AppWrapper>
-      <SessionProvider session={session}>
-        <RecoilRoot>
+    <RecoilRoot>
+      <AppWrapper>
+        <SessionProvider session={session}>
           <Component {...pageProps} />
-        </RecoilRoot>
-      </SessionProvider>
-    </AppWrapper>
+        </SessionProvider>
+      </AppWrapper>
+    </RecoilRoot>
   );
 }

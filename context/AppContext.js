@@ -7,6 +7,9 @@ import {
   useState,
 } from "react";
 
+import { labels } from "../atom/labelAtom";
+import { useRecoilState } from "recoil";
+
 const AppContext = createContext();
 
 function savedEventsReducer(state, { type, payload }) {
@@ -33,6 +36,7 @@ function initialFunction() {
 
 export function AppWrapper({ children }) {
   const [appState, setAppState] = useState({ name: "Abhishek" });
+  const [selectedLabels, setSelectedLabels] = useRecoilState(labels);
 
   const [savedEvents, dispatchEvents] = useReducer(
     savedEventsReducer,
@@ -40,9 +44,36 @@ export function AppWrapper({ children }) {
     initialFunction
   );
 
+  const filteredEvents = useMemo(() => {
+    return savedEvents;
+  }, [savedEvents, labels]);
+
   useEffect(() => {
     localStorage.setItem("savedEvents", JSON.stringify(savedEvents));
   }, [savedEvents]);
+
+  useEffect(() => {
+    setSelectedLabels((prevLabels) => {
+      return [...new Set(savedEvents.map((evt) => evt.selectedLabel))].map(
+        (label) => {
+          const currentLabel = prevLabels.find(
+            (lbl) => lbl.selectedLabel === label
+          );
+          return {
+            label,
+          };
+        }
+      );
+    });
+  }, [savedEvents]);
+
+  function updateLabels(labels) {
+    setSelectedLabels(
+      selectedLabels.map((lbl) =>
+        lbl.selectedLabel === labels.selectedLabel ? labels : lbl
+      )
+    );
+  }
 
   const contextValue = useMemo(() => {
     return [savedEvents, dispatchEvents];

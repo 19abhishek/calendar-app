@@ -3,6 +3,7 @@ import Image from "next/image";
 import SidebarCalendar from "./SidebarCalendar";
 import { modalState } from "../atom/modalAtom";
 import { useRecoilState } from "recoil";
+import Labels from "./Labels";
 
 function Sidebar({ month }) {
   const [currentModalState, setCurrentModalState] = useRecoilState(modalState);
@@ -17,6 +18,7 @@ function Sidebar({ month }) {
         <span className="text-xl text-gray-500">Create</span>
       </button>
       <SidebarCalendar />
+      <Labels />
     </div>
   );
 }
