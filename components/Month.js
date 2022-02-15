@@ -1,6 +1,5 @@
 import React from "react";
 import Day from "./Day";
-import dayjs from "dayjs";
 
 function Month({ month }) {
   return (

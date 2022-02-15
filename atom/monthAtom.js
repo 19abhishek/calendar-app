@@ -1,11 +1,11 @@
 import { atom } from "recoil";
 import dayjs from "dayjs";
 
-let currMonthIndex = dayjs().month();
+//let currMonthIndex = dayjs().month();
 
 export const getMonthIndex = atom({
   key: "getMonthIndex",
-  default: currMonthIndex,
+  default: dayjs().month(),
 });
 
 export const sidebarCalendarMonth = atom({

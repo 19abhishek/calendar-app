@@ -19,6 +19,7 @@ import { events } from "../atom/eventAtom";
 import { useAppContext } from "../context/AppContext";
 
 export default function Home() {
+  console.log("Hello");
   const { data: session } = useSession();
   const router = useRouter();
   const { status } = useSession({
@@ -28,8 +29,10 @@ export default function Home() {
       router.push("/home");
     },
   });
-  const [currentMonth, setCurrentMonth] = useState(getMonth());
   const [monthIndex, setMonthIndex] = useRecoilState(getMonthIndex);
+  const [currentMonth, setCurrentMonth] = useState(getMonth());
+
+  //const [monthIndex, setMonthIndex] = useRecoilState(getMonthIndex);
 
   const [smallCalendarMonth, setSmallCalendarMonth] =
     useRecoilState(sidebarCalendarMonth);
@@ -48,14 +51,14 @@ export default function Home() {
 
   const [appState, setAppState] = useAppContext();
 
-  console.log(appState);
-
   useEffect(() => {
     localStorage.setItem("savedEvents", JSON.stringify(savedEvents));
   }, [savedEvents]);
 
   useEffect(() => {
+    console.log("hmm");
     setCurrentMonth(getMonth(monthIndex));
+    console.log(currentMonth);
   }, [monthIndex]);
 
   useEffect(() => {
@@ -63,6 +66,14 @@ export default function Home() {
       setMonthIndex(smallCalendarMonth);
     }
   }, [smallCalendarMonth]);
+
+  useEffect(() => {
+    setCurrentMonth(getMonth(monthIndex));
+    console.log("Hi");
+    console.log(currentMonth);
+  }, []);
+
+  console.log(currentMonth);
 
   //useEffect(() => {}, []);
 
