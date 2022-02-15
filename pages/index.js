@@ -17,6 +17,7 @@ import CreateEvent from "../components/CreateEventModal";
 import { modalState } from "../atom/modalAtom";
 import { events } from "../atom/eventAtom";
 import { useAppContext } from "../context/AppContext";
+import dayjs from "dayjs";
 
 export default function Home() {
   console.log("Hello");
@@ -30,7 +31,10 @@ export default function Home() {
     },
   });
   const [monthIndex, setMonthIndex] = useRecoilState(getMonthIndex);
-  const [currentMonth, setCurrentMonth] = useState(getMonth());
+  //console.log(monthIndex);
+  const [currentMonth, setCurrentMonth] = useState(getMonth(monthIndex));
+
+  //console.log(getMonth(6));
 
   //const [monthIndex, setMonthIndex] = useRecoilState(getMonthIndex);
 
@@ -56,9 +60,7 @@ export default function Home() {
   }, [savedEvents]);
 
   useEffect(() => {
-    console.log("hmm");
     setCurrentMonth(getMonth(monthIndex));
-    console.log(currentMonth);
   }, [monthIndex]);
 
   useEffect(() => {
@@ -69,11 +71,13 @@ export default function Home() {
 
   useEffect(() => {
     setCurrentMonth(getMonth(monthIndex));
-    console.log("Hi");
-    console.log(currentMonth);
+    // console.log("Hi");
+    // console.log(currentMonth);
   }, []);
 
-  console.log(currentMonth);
+  //setMonthIndex(dayjs().month())
+
+  //console.log(currentMonth, monthIndex);
 
   //useEffect(() => {}, []);
 
