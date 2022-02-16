@@ -78,7 +78,7 @@ function CreateEvent() {
   }
 
   return (
-    <div className="fixed border-0 border-gray-500 z-40 top-[18vh] left-[35vw] w-[30vw] h-[72vh] rounded-lg shadow-2xl bg-[#fff]">
+    <div className="fixed border-0 border-gray-500 z-40 top-[18vh] left-[35vw] w-[30vw] h-[80vh] rounded-lg shadow-2xl bg-[#fff]">
       <header className="h-[5vh] bg-gray-100 rounded-t-lg flex items-center justify-between p-4">
         <DragHandleIcon className="!text-gray-400 !text-2xl" />
         <span>
